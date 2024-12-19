@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captcha Login</title>
+    <script type="text/javascript" src="https://b82b1763d1c3.eu-west-3.captcha-sdk.awswaf.com/b82b1763d1c3/jsapi.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        #captcha-container {
+            margin: 15px 0;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover:enabled {
+            background-color: #0056b3;
+        }
+
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            color: green;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required />
+            </div>
+            <div id="captcha-container"></div>
+            <button type="submit" class="btn" id="submit-btn" disabled>Login</button>
+        </form>
+        <div id="error-container" class="error"></div>
+        <div id="success-container" class="success-message"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const submitButton = document.getElementById("submit-btn");
+            const errorContainer = document.getElementById("error-container");
+            const successContainer = document.getElementById("success-container");
+
+            // Render CAPTCHA
+            const renderCaptcha = () => {
+                const container = document.getElementById("captcha-container");
+                AwsWafCaptcha.renderCaptcha(container, {
+                    apiKey: "TBiG/+TZQjEXaYq8nllidX3C1pVZ9kMGM/Nkf6CaSHZw3JtDEPxkMRWhz7gBFEIc1hcf5JpUBHU+NYIgFzuSCPLD/8PXa/rLdlEzvJ4L1/k3sfyUlbalW8eRtI/Xl74mLtCxGxLw+VoeiVvHh0yF/QqiPwaAo3D3w/stwx1PoRq/GOfyWE2Yn7uNTM9Moxly1DKX8A3yFTp60m7KpFpEB/ck9Q5npoUMvQesXYyzqGC6sji3SzISjVhJ7gZXliocLFIgOSOGaPZEx3QAahJonOG5ty8uaKa13beAUxEbbh2Cyz7Sn7ttZx/EGCLC4dasVqjHRZnyKAS17SckAee9/mkRwdZl9RiG71UQTELFC9rIOYINj7GnklDvTvf0PRbJo+9VRC9wh4EqPps76NKcQchomcN+2tnNpbVg6oBiVXC5xBN31QsVs0QsHalrJOszZmJcZgWalMXA8hB6UHVLa7KEvsBoeCvYhyCGm/QFRvegWaA4s+upwHZS93XB+UH+jw4D0LH8dvSXFBqzDN70QlDQk6WlLlqtDoUlh42/+IHLAmk5P4b2EsryMKOiGiwypxrzQC3/u1cbg67Aq6IFOZPxqcqpjZ7qteh00kMF3vFklLgs+G8isB+8HzeW5y3DRfijFKGtqtpDnw9RLJXN0PvR8ip6Bf7ZVjAUg9Zkees=_0_1",
+                    onSuccess: () => {
+                        submitButton.disabled = false;
+                        errorContainer.textContent = "";
+                    },
+                    onError: (error) => {
+                        errorContainer.textContent = error.message;
+                        submitButton.disabled = true;
+                    },
+                });
+            };
+
+            renderCaptcha();
+
+            // Handle form submission
+            document.getElementById("login-form").addEventListener("submit", (e) => {
+                e.preventDefault();
+                successContainer.textContent = "Login successful! CAPTCHA validated.";
+                errorContainer.textContent = "";
+
+                // Mock AJAX request for login validation
+                setTimeout(() => {
+                    alert("Login processed successfully!");
+                }, 500);
+            });
+        });
+    </script>
+</body>
+
+</html>
